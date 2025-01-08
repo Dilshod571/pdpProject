@@ -1,0 +1,25 @@
+spring:
+
+  application:
+    name: FinalProject
+  datasource:
+   url: jdbc:postgresql://dpg-ctvbvm2j1k6c73emmcr0-a.oregon-postgres.render.com:5432/finalproject_db_qljq
+   username: finalproject_db_qljq_user
+   password: BPklU23lCaZcM4phACEXzkpcbnpDpdpH
+   driver-class-name: org.postgresql.Driver
+
+
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+
+
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /ui
+
+server:
+  port: 8080
