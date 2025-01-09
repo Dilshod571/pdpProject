@@ -9,10 +9,11 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**")
-                .allowedOrigins("*")
-                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
-                .allowedHeaders("*")
-                .maxAge(3600);
+        // Barcha endpointlar uchun CORS ni sozlash
+        registry.addMapping("/**")  // Barcha yo'llar uchun
+                .allowedOrigins("/**")  // Frontend manzilingiz
+                .allowedMethods("GET", "POST", "PUT", "DELETE")  // Ruxsat etilgan metodlar
+                .allowedHeaders("*");  // Ruxsat etilgan header'lar
+                //.allowCredentials(true);  // Cookies va autentifikatsiyani ruxsat berish
     }
 }
