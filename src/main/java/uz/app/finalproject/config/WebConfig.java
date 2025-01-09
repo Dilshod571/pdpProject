@@ -1,19 +1,57 @@
 package uz.app.finalproject.config;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+import java.util.List;
 
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
 
-    @Override
-    public void addCorsMappings(CorsRegistry registry) {
-        // Barcha endpointlar uchun CORS ni sozlash
-        registry.addMapping("/**")  // Barcha yo'llar uchun
-                .allowedOrigins("/**")  // Frontend manzilingiz
-                .allowedMethods("GET", "POST", "PUT", "DELETE")  // Ruxsat etilgan metodlar
-                .allowedHeaders("*");  // Ruxsat etilgan header'lar
-                //.allowCredentials(true);  // Cookies va autentifikatsiyani ruxsat berish
+//    @Override
+//    public void addCorsMappings(CorsRegistry registry) {
+//        // Barcha endpointlar uchun CORS ni sozlash
+
+    /// /        registry.addMapping("/**")  // Barcha yo'llar uchun
+    /// /                .allowedOrigins("/**")  // Frontend manzilingiz
+    /// /                .allowedMethods("GET", "POST", "PUT", "DELETE")  // Ruxsat etilgan metodlar
+    /// /                .allowedHeaders("*");  // Ruxsat etilgan header'lar
+//                //.allowCredentials(true);  // Cookies va autentifikatsiyani ruxsat berish
+//    }
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        return http.csrf(c -> c.disable())
+                .cors(c -> consConfig())
+                .userDetailsService(userDetailsService())
+                .authorizeHttpRequests(
+                        auth -> {
+                            auth.anyRequest().permitAll();
+                        }
+                ).build();
+    }
+    @Bean
+    public UserDetailsService userDetailsService(){
+        return (username)->{
+            return null;
+        };
+    }
+
+    @Bean
+    public CorsConfigurationSource consConfig() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOriginPatterns(List.of("*"));
+        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE"));
+        configuration.setAllowedHeaders(List.of("*"));
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
     }
 }
