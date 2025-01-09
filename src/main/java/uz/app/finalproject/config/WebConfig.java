@@ -31,6 +31,7 @@ public class WebConfig implements WebMvcConfigurer {
         return http.csrf(c -> c.disable())
                 .cors(c -> consConfig())
                 .userDetailsService(userDetailsService())
+
                 .authorizeHttpRequests(
                         auth -> {
                             auth.anyRequest().permitAll();
